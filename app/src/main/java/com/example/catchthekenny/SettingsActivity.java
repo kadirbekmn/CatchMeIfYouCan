@@ -6,61 +6,102 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.SeekBar;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class SettingsActivity extends AppCompatActivity {
 
     SeekBar volumeControl;
+    SeekBar timeControl;
+    SeekBar speedControl;
     MediaPlayer mediaPlayer;
     SharedPreferences sharedPreferences;
+    TextView timeText;
+    TextView speedText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        // Toolbar'ı ayarla
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // Geri butonunu göster
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.back); // Geri butonu için simge (drawable altında ic_back simgesi olmalı)
+            getSupportActionBar().setTitle("Menüye Dön");
         }
 
-        volumeControl = findViewById(R.id.volumeSeekBar);
+        timeControl = findViewById(R.id.timeSeekBar);
+        speedControl = findViewById(R.id.speedSeekBar);
+        timeText = findViewById(R.id.timeText);
+        speedText = findViewById(R.id.speedText);
+
         sharedPreferences = getSharedPreferences("com.example.catchthekenny", MODE_PRIVATE);
-
-        // Medya oynatıcıyı al
-        mediaPlayer = MediaPlayer.create(this, R.raw.sound);
-
-        // Önceden ayarlanmış ses seviyesini yükle
-        int savedVolume = sharedPreferences.getInt("volume", 50);
-        volumeControl.setProgress(savedVolume);
-        mediaPlayer.setVolume(savedVolume / 100f, savedVolume / 100f);
 
         volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mediaPlayer.setVolume(progress / 100f, progress / 100f);
-                // Ses seviyesini kaydet
                 sharedPreferences.edit().putInt("volume", progress).apply();
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        int savedTime = sharedPreferences.getInt("gameDuration", 10);
+        timeControl.setProgress(savedTime - 10);
+        timeText.setText("Game Duration: " + savedTime + " seconds");
+
+        timeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int selectedTime = progress + 10;
+                timeText.setText("Game Duration: " + selectedTime + " seconds");
+                sharedPreferences.edit().putInt("gameDuration", selectedTime).apply();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        int savedSpeed = sharedPreferences.getInt("imageSpeed", 1000);
+        speedControl.setProgress((savedSpeed / 100) - 1);
+        speedText.setText("Image Speed: " + savedSpeed + " ms");
+
+        speedControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int selectedSpeed = (progress + 1) * 100;
+                speedText.setText("Image Speed: " + selectedSpeed + " ms");
+                sharedPreferences.edit().putInt("imageSpeed", selectedSpeed).apply();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            // Geri butonuna basıldığında menüye dön
             Intent intent = new Intent(SettingsActivity.this, MenuActivity.class);
             startActivity(intent);
             finish();
