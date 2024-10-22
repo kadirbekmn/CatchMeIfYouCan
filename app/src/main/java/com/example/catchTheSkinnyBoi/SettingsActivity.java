@@ -1,4 +1,4 @@
-package com.example.catchthekenny;
+package com.example.catchTheSkinnyBoi;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
