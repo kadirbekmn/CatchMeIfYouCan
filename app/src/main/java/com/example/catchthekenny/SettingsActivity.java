@@ -23,7 +23,6 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        // Toolbar ayarları
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -31,18 +30,13 @@ public class SettingsActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Menüye Dön");
         }
 
-        // Layout'taki bileşenleri tanımla
         timeControl = findViewById(R.id.timeSeekBar);
         speedControl = findViewById(R.id.speedSeekBar);
         timeText = findViewById(R.id.timeText);
         speedText = findViewById(R.id.speedText);
-
-        // SharedPreferences ile kullanıcı ayarlarını al
         sharedPreferences = getSharedPreferences("com.example.catchthekenny", MODE_PRIVATE);
-
-        // Oyun süresi ayarlarını yükle
         int savedTime = sharedPreferences.getInt("gameDuration", 10);
-        timeControl.setProgress(savedTime - 10);  // Başlangıç değeri ayarla
+        timeControl.setProgress(savedTime - 10);
         timeText.setText("Game Duration: " + savedTime + " seconds");
 
         timeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -54,30 +48,33 @@ public class SettingsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
 
-        // Resim hızını ayarlama
-        int savedSpeed = sharedPreferences.getInt("imageSpeed", 1000);  // Varsayılan hız 1000ms
-        speedControl.setProgress((savedSpeed / 100) - 1);  // Seekbar ayarı
+        int savedSpeed = sharedPreferences.getInt("imageSpeed", 1000);
+        speedControl.setProgress((savedSpeed / 100) - 1);
         speedText.setText("Image Speed: " + savedSpeed + " ms");
 
         speedControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int selectedSpeed = (progress + 1) * 100;  // 100ms ile 2000ms arasında
+                int selectedSpeed = (progress + 1) * 100;
                 speedText.setText("Image Speed: " + selectedSpeed + " ms");
                 sharedPreferences.edit().putInt("imageSpeed", selectedSpeed).apply();
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
     }
 
