@@ -1,4 +1,4 @@
-package com.example.catchTheSkinnyBoi;
+package com.moonlight.catchTheSkinnyBoi;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;

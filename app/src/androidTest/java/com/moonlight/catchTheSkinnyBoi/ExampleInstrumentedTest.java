@@ -1,4 +1,4 @@
-package com.example.catchTheSkinnyBoi;
+package com.moonlight.catchTheSkinnyBoi;
 
 import android.content.Context;
 

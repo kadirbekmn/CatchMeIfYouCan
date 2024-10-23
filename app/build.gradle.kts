@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.catchTheSkinnyBoi"
+    namespace = "com.moonlight.catchTheSkinnyBoi"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.catchTheSkinnyBoi"
+        applicationId = "com.moonlight.catchTheSkinnyBoi"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
